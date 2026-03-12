@@ -2,10 +2,10 @@ name: Quote Automator - Upload Short
 
 on:
   schedule:
-    - cron: '30 4 * * *'     # 4:30 AM UTC  = 10:00 AM IST (Subah)
-    - cron: '30 10 * * *'    # 10:30 AM UTC = 4:00 PM IST (Shaam)
-    - cron: '30 15 * * *'    # 3:30 PM UTC  = 9:00 PM IST (Raat)
-  workflow_dispatch:          # Manual trigger bhi kar sakta hai
+    - cron: '30 4 * * *'
+    - cron: '30 10 * * *'
+    - cron: '30 15 * * *'
+  workflow_dispatch:
 
 permissions:
   contents: write
@@ -41,18 +41,10 @@ jobs:
           GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
         run: python main.py
 
-      - name: 🔑 Update token secret
-        if: always()
-        run: |
-          if [ -f token.json ]; then
-            echo "Token file exists, will be committed if changed"
-          fi
-
       - name: 📝 Commit updated quotes file
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
           git add quotes.txt
-          git add token.json || true
           git diff --staged --quiet || git commit -m "✅ Quote used and removed [skip ci]"
           git push
