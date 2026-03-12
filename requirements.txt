@@ -1,0 +1,7 @@
+google-generativeai
+moviepy==1.0.3
+Pillow
+python-dotenv
+google-auth-oauthlib
+google-api-python-client
+google-auth
