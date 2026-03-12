@@ -1,0 +1,66 @@
+name: Quote Automator - Upload Short
+
+on:
+  schedule:
+    # Din mei 2 baar chalega (adjust kar apne hisaab se)
+    - cron: '0 6 * * *'    # 6 AM UTC (11:30 AM IST)
+    - cron: '0 14 * * *'   # 2 PM UTC (7:30 PM IST)
+  workflow_dispatch:        # Manual trigger bhi kar sakta hai
+
+permissions:
+  contents: write           # quotes.txt update ke liye zaroori
+
+jobs:
+  upload-short:
+    runs-on: ubuntu-latest
+
+    steps:
+      # ---- Repo checkout ----
+      - name: 📥 Checkout repo
+        uses: actions/checkout@v4
+
+      # ---- Python setup ----
+      - name: 🐍 Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      # ---- System dependencies ----
+      - name: 📦 Install system deps
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y ffmpeg
+
+      # ---- Python dependencies ----
+      - name: 📦 Install Python deps
+        run: pip install -r requirements.txt
+
+      # ---- Secrets se credential files banao ----
+      - name: 🔐 Setup credentials
+        run: |
+          echo '${{ secrets.CLIENT_SECRET_JSON }}' > client_secret.json
+          echo '${{ secrets.YOUTUBE_TOKEN }}' > token.json
+
+      # ---- Main script chalao ----
+      - name: 🚀 Run automator
+        env:
+          GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+        run: python main.py
+
+      # ---- Updated token wapas save karo ----
+      - name: 🔑 Update token secret
+        if: always()
+        run: |
+          if [ -f token.json ]; then
+            echo "Token file exists, will be committed if changed"
+          fi
+
+      # ---- quotes.txt ka change commit & push karo ----
+      - name: 📝 Commit updated quotes file
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add quotes.txt
+          git add token.json || true
+          git diff --staged --quiet || git commit -m "✅ Quote used and removed [skip ci]"
+          git push
