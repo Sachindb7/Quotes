@@ -117,13 +117,13 @@ Your job: Generate ONLY the metadata for this YouTube Short.
 DO NOT change or rewrite the quote. Just create metadata FOR it.
 
 Rules:
-1. TITLE: Catchy, under 100 characters, 2-3 emojis, MUST include #shorts
+1. TITLE: Catchy, under 100 characters, 2-3 emojis, MUST 2-3 hashtags with #shorts
    - Make someone STOP scrolling
-   - Feel urgent and personal
+   - Feel urgent and personal and relatable 
    - Don't reveal the full quote in title
 
-2. DESCRIPTION: 2-4 short engaging lines + 5-6 hashtags including #shorts
-   - Relatable and engaging
+2. DESCRIPTION: 8-10 short engaging lines with high SEO keywords + 5-6 hashtags including #shorts
+   - Relatable and engaging with emojis
    - Include relevant hashtags
 
 3. TAGS: 25-30 comma-separated SEO keywords
