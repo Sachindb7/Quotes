@@ -1,50 +1,50 @@
-# name: Quote Automator - Upload Short
+name: Quote Automator - Upload Short
 
-# on:
-#   schedule:
-#     - cron: '30 4 * * *'
-#     - cron: '30 10 * * *'
-#     - cron: '30 15 * * *'
-#   workflow_dispatch:
+on:
+  schedule:
+    - cron: '30 4 * * *'
+    - cron: '30 10 * * *'
+    - cron: '30 15 * * *'
+  workflow_dispatch:
 
-# permissions:
-#   contents: write
+permissions:
+  contents: write
 
-# jobs:
-#   upload-short:
-#     runs-on: ubuntu-latest
+jobs:
+  upload-short:
+    runs-on: ubuntu-latest
 
-#     steps:
-#       - name: 📥 Checkout repo
-#         uses: actions/checkout@v4
+    steps:
+      - name: 📥 Checkout repo
+        uses: actions/checkout@v4
 
-#       - name: 🐍 Setup Python
-#         uses: actions/setup-python@v5
-#         with:
-#           python-version: '3.11'
+      - name: 🐍 Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
 
-#       - name: 📦 Install system deps
-#         run: |
-#           sudo apt-get update
-#           sudo apt-get install -y ffmpeg
+      - name: 📦 Install system deps
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y ffmpeg
 
-#       - name: 📦 Install Python deps
-#         run: pip install -r requirements.txt
+      - name: 📦 Install Python deps
+        run: pip install -r requirements.txt
 
-#       - name: 🔐 Setup credentials
-#         run: |
-#           echo '${{ secrets.CLIENT_SECRET_JSON }}' > client_secret.json
-#           echo '${{ secrets.YOUTUBE_TOKEN }}' > token.json
+      - name: 🔐 Setup credentials
+        run: |
+          echo '${{ secrets.CLIENT_SECRET_JSON }}' > client_secret.json
+          echo '${{ secrets.YOUTUBE_TOKEN }}' > token.json
 
-#       - name: 🚀 Run automator
-#         env:
-#           GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
-#         run: python main.py
+      - name: 🚀 Run automator
+        env:
+          GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+        run: python main.py
 
-#       - name: 📝 Commit updated quotes file
-#         run: |
-#           git config user.name "github-actions[bot]"
-#           git config user.email "github-actions[bot]@users.noreply.github.com"
-#           git add quotes.txt
-#           git diff --staged --quiet || git commit -m "✅ Quote used and removed [skip ci]"
-#           git push
+      - name: 📝 Commit updated quotes file
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add quotes.txt
+          git diff --staged --quiet || git commit -m "✅ Quote used and removed [skip ci]"
+          git push
